@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- JS class — cegah flash sebelum reveal -->
+<script>document.documentElement.classList.add('js');</script>
+
+<!-- BOOT GATE — selalu redirect ke boot.html kalau belum lewat boot -->
+<script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('booted') !== '1') {
+    window.location.replace('boot.html');
+  }
+})();
+</script>
+
+<title>Rupiah's Hunters — Komunitas Bisnis & Karier</title>
+<meta name="description" content="Bukan grup instan. Tempat belajar bisnis, cari lowongan, dan bertumbuh bersama. Dari niat, jadi nyata.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ============================================
+     NAVBAR
+     ============================================ -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-dot"></span>
+      Rupiah's Hunters
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="bahas.html">Apa yang Dibahas</a></li>
+      <li><a href="prinsip.html">Prinsip</a></li>
+      <li><a href="tentang.html">Tentang</a></li>
+      <li><a href="creator.html">Creator</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="https://chat.whatsapp.com/JJwnH9KzwWt23Pa05dP2R0?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener" class="nav-cta">Join Grup</a>
+      <button class="nav-toggle" aria-label="Menu" id="navToggle">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-mobile" id="navMobile">
+    <a href="bahas.html">Apa yang Dibahas</a>
+    <a href="prinsip.html">Prinsip</a>
+    <a href="tentang.html">Tentang</a>
+    <a href="creator.html">Creator</a>
+    <a href="faq.html">FAQ</a>
+    <a href="https://chat.whatsapp.com/JJwnH9KzwWt23Pa05dP2R0?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener" class="nav-mobile-cta">Join Grup WhatsApp →</a>
+  </div>
+</nav>
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<header class="hero reveal">
+  <div class="wrap">
+    <span class="eyebrow">Komunitas Bisnis &amp; Karier</span>
+    <h1>Kami tidak sekadar mencari kerja.<br>Kami menciptakan lapangan kerja.</h1>
+
+    <p class="rotate-line" data-rotate="Tempat belajar bisnis.|Tempat cari lowongan.|Tempat bangun relasi.|Tempat tumbuh bareng.|Dari niat, jadi nyata."></p>
+
+    <div class="cta-row">
+      <a href="https://chat.whatsapp.com/JJwnH9KzwWt23Pa05dP2R0?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener" class="btn btn-primary">Join Grup WhatsApp →</a>
+      <a href="tentang.html" class="btn btn-ghost">Kenali Kami</a>
+    </div>
+    <p class="hero-note">Gratis. Tanpa biaya masuk. Tanpa upsell.</p>
+  </div>
+</header>
+
+<!-- ============================================
+     STATS BAR
+     ============================================ -->
+<section class="stats-bar reveal">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Pendiri</div>
+        <div class="stat-desc">Masih di titik nol. Bareng-bareng bangun dari awal.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1</div>
+        <div class="stat-label">Misi</div>
+        <div class="stat-desc">Menciptakan lapangan kerja, bukan cuma cari kerja.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Biaya</div>
+        <div class="stat-desc">Selamanya. Nggak ada biaya masuk, nggak ada jebakan.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     APA YANG DIBAHAS
+     ============================================ -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Apa yang dibahas</div>
+      <h2>Tiga hal yang kami perjuangkan.</h2>
+      <p class="lead">Kami sengaja membatasi diri. Bukan karena nggak bisa ngomongin hal lain, tapi karena fokus itu yang bikin sebuah grup berguna. Semua isi grup ini bermuara pada satu hal: bikin kamu naik level.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-num">01 / BISNIS</div>
+        <h3>Bangun Usaha</h3>
+        <p>Diskusi ide, strategi, dan eksekusi. Dari yang baru mikir mau mulai, sampai yang udah jalan dan butuh teman diskusi. Kami nggak jual mimpi — kami bahas langkah nyata.</p>
+      </div>
+      <div class="card">
+        <div class="card-num">02 / KARIER</div>
+        <h3>Cari Lowongan</h3>
+        <p>Info kerja, tips lamaran, dan pengalaman nyata dari member. Bukan sekadar share link lowongan yang ujungnya nggak ada kabar — tapi konteks, tips, dan siapa tahu ada jalur masuk.</p>
+      </div>
+      <div class="card">
+        <div class="card-num">03 / RELASI</div>
+        <h3>Bangun Koneksi</h3>
+        <p>Tempat orang saling kenal, kolaborasi, dan tumbuh bareng. Peluang sering datang dari orang yang kita kenal, bukan dari lamaran yang kita kirim. Di sini kamu bangun itu.</p>
+      </div>
+    </div>
+
+    <div class="section-foot">
+      <a href="bahas.html" class="link-arrow">Selengkapnya tentang apa yang kami bahas →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     MANIFESTO
+     ============================================ -->
+<section class="manifesto reveal">
+  <div class="wrap">
+    <blockquote class="pull-quote">
+      <p>“Peluang tidak datang sendiri. Ia diburu — dengan niat, dengan gerak, dan dengan orang-orang yang tepat di sekitar kita.”</p>
+      <cite>— Rupiah's Hunters</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ============================================
+     PRINSIP
+     ============================================ -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Prinsip kami</div>
+      <h2>Kami pegang ini sejak hari pertama.</h2>
+      <p class="lead">Prinsip itu nggak berguna kalau cuma diucapkan. Kami tulis di sini biar bisa dipegang — dan biar kamu tahu kami ini tipe orang yang seperti apa sebelum kamu join.</p>
+    </div>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="p-num">01</div>
+        <div class="p-title">Solusi, bukan obrolan.</div>
+        <div class="p-desc">Setiap diskusi harus ada ujungnya. Kalau nggak berguna, nggak perlu dibahas. Kami benci basa-basi yang bikin grup jadi ramai tapi kosong.</div>
+      </div>
+      <div class="principle">
+        <div class="p-num">02</div>
+        <div class="p-title">Bertumbuh bersama.</div>
+        <div class="p-desc">Nggak ada yang jalan sendirian. Kalau satu naik, yang lain ikut naik. Prinsip ini sederhana, tapi jarang banget dipegang orang.</div>
+      </div>
+      <div class="principle">
+        <div class="p-num">03</div>
+        <div class="p-title">Dari niat, jadi nyata.</div>
+        <div class="p-desc">Banyak yang punya ide. Sedikit yang eksekusi. Kami kumpulkan yang kedua — yang mau gerak, bukan yang cuma mau ngomong.</div>
+      </div>
+    </div>
+
+    <div class="section-foot">
+      <a href="prinsip.html" class="link-arrow">Baca prinsip lengkapnya →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     UNTUK SIAPA
+     ============================================ -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Untuk siapa</div>
+      <h2>Grup ini cocok buat kamu, kalau…</h2>
+      <p class="lead">Kami lebih suka jujur soal siapa yang cocok di sini. Biar kamu nggak buang waktu, dan kami juga nggak salah orang.</p>
+    </div>
+
+    <div class="for-who">
+      <div class="for-col">
+        <div class="for-badge for-yes">Cocok</div>
+        <ul>
+          <li>Kamu bosan nunggu dan pengen mulai bergerak.</li>
+          <li>Kamu lagi cari kerja dan butuh jaringan, bukan cuma lowongan.</li>
+          <li>Kamu punya ide bisnis dan butuh teman diskusi yang serius.</li>
+          <li>Kamu pengen belajar dari orang yang lagi berjuang, bukan dari motivator.</li>
+          <li>Kamu nggak masalah mulai dari nol bareng orang lain.</li>
+        </ul>
+      </div>
+      <div class="for-col">
+        <div class="for-badge for-no">Mungkin nggak cocok</div>
+        <ul>
+          <li>Kamu cari cuan instan tanpa mau usaha.</li>
+          <li>Kamu cuma pengen numpang ramai tapi nggak mau kontribusi.</li>
+          <li>Kamu nggak suka diskusi serius dan lebih suka basa-basi.</li>
+          <li>Kamu cuma pengen spam promosi pribadi.</li>
+          <li>Kamu nggak percaya peluang bisa dibangun bareng.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     ROADMAP
+     ============================================ -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Roadmap</div>
+      <h2>Yang sedang kami bangun.</h2>
+      <p class="lead">Kami masih baru. Jadi kami nggak akan pura-pura punya segalanya. Ini yang kami kejar, pelan tapi pasti.</p>
+    </div>
+
+    <div class="roadmap">
+      <div class="road-item">
+        <div class="road-status road-now">Sedang berjalan</div>
+        <h4>Kumpulkan orang yang tepat</h4>
+        <p>Kami nggak kejar jumlah. Kami kejar kualitas. Lebih baik 10 orang serius daripada 100 orang yang cuma lewat.</p>
+      </div>
+      <div class="road-item">
+        <div class="road-status">Fase berikutnya</div>
+        <h4>Rutin berbagi info lowongan</h4>
+        <p>Setiap lowongan yang masuk akan dibahas, bukan cuma di-share. Konteks, tips, dan pengalaman.</p>
+      </div>
+      <div class="road-item">
+        <div class="road-status">Fase berikutnya</div>
+        <h4>Sesi diskusi rutin</h4>
+        <p>Obrolan terjadwal soal bisnis, karier, atau skill. Biar grup nggak cuma jadi tempat numpang info.</p>
+      </div>
+      <div class="road-item">
+        <div class="road-status">Visi jangka panjang</div>
+        <h4>Bareng-bareng bikin lapangan kerja</h4>
+        <p>Ini misi besar kami. Nggak akan cepat, tapi setiap langkah kecil di grup ini adalah bagian dari jalan ke sana.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SIAPA KAMI
+     ============================================ -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <div class="section-label">Siapa kami</div>
+        <h2>Dimulai dari tiga orang.</h2>
+        <p class="lead">Tiga orang. Satu obrolan. Satu keyakinan yang sama: peluang nggak datang sendiri — harus diburu.</p>
+      </div>
+      <div class="about-text">
+        <p>Rupiah's Hunters lahir dari obrolan sederhana antara tiga orang yang percaya satu hal: peluang tidak datang sendiri — harus diburu.</p>
+        <p>Kami masih baru. Belum ada pencapaian besar untuk dibanggakan. Tapi justru itu yang membuat kami jujur — dan kami ingin kamu jadi bagian dari cerita yang baru dimulai.</p>
+        <p>Kalau kamu tipe orang yang bosan nunggu, dan lebih suka bergerak, kamu akan betah di sini.</p>
+        <p><a href="tentang.html" class="link-arrow">Baca cerita lengkapnya →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     FAQ PREVIEW
+     ============================================ -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">FAQ</div>
+      <h2>Yang sering ditanya.</h2>
+      <p class="lead">Beberapa pertanyaan yang sering muncul sebelum orang join. Kalau masih ada yang mengganjal, tanya langsung aja di grup.</p>
+    </div>
+
+    <div class="faq-list">
+      <details>
+        <summary>Grup ini baru — kenapa harus join sekarang?</summary>
+        <p>Justru karena baru. Kamu bisa jadi bagian dari fondasi, ikut membentuk arah, dan tumbuh bersama dari awal. Bukan numpang di grup yang sudah besar dan ramai tapi kamu cuma jadi penonton.</p>
+      </details>
+      <details>
+        <summary>Apakah gratis?</summary>
+        <p>Ya, sepenuhnya gratis. Tidak ada biaya masuk, tidak ada upsell. Kalau nanti ada hal yang berbayar, itu murni opsional dan akan diinfokan terbuka.</p>
+      </details>
+      <details>
+        <summary>Isinya apa aja?</summary>
+        <p>Diskusi bisnis, info lowongan kerja, tanya-jawab seputar karier, dan obrolan santai yang tetap berguna. Fokus kami tiga: bisnis, karier, relasi.</p>
+      </details>
+    </div>
+
+    <div class="section-foot">
+      <a href="faq.html" class="link-arrow">Lihat semua FAQ →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     FINAL CTA
+     ============================================ -->
+<section class="final reveal">
+  <div class="wrap">
+    <div class="section-label" style="justify-content:center">Siap mulai?</div>
+    <h2>Mulai berburu.</h2>
+    <p class="sub">Satu klik. Nggak ada yang hilang. Yang ada cuma kesempatan baru — dan orang-orang yang mungkin mengubah arah hidupmu.</p>
+    <a href="https://chat.whatsapp.com/JJwnH9KzwWt23Pa05dP2R0?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener" class="btn btn-primary">Join Grup WhatsApp →</a>
+    <p class="hero-note">Gratis. Tanpa biaya masuk. Tanpa upsell.</p>
+  </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="logo">
+          <span class="logo-dot"></span>
+          Rupiah's Hunters
+        </div>
+        <p>Komunitas bisnis & karier. Dibangun dari niat, tumbuh bareng, dari nol.</p>
+      </div>
+
+      <div class="foot-col">
+        <h5>Jelajahi</h5>
+        <a href="bahas.html">Apa yang Dibahas</a>
+        <a href="prinsip.html">Prinsip</a>
+        <a href="tentang.html">Tentang</a>
+        <a href="creator.html">Creator</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+
+      <div class="foot-col">
+        <h5>Gabung</h5>
+        <a href="https://chat.whatsapp.com/JJwnH9KzwWt23Pa05dP2R0?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener">Grup WhatsApp</a>
+        <a href="faq.html">Aturan Grup</a>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>© 2025 Rupiah's Hunters. Dibangun dari niat.</div>
+      <div class="foot-tag">Dari niat, jadi nyata.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/script.js"></script>
+</body>
+</html>
