@@ -7,11 +7,19 @@
 <!-- JS class — cegah flash sebelum reveal -->
 <script>document.documentElement.classList.add('js');</script>
 
-<!-- BOOT GATE — selalu redirect ke boot.html kalau belum lewat boot -->
+<!-- favicon — monogram RH -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23050507'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23d8c7a1' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='13' fill='none' stroke='%23f5f5f7' stroke-opacity='.5' stroke-width='1'/%3E%3Cpath d='M32 8v8M32 48v8M8 32h8M48 32h8' stroke='%23f5f5f7' stroke-width='2'/%3E%3Ctext x='32' y='38' font-family='Georgia,serif' font-style='italic' font-size='20' fill='%23f5f5f7' text-anchor='middle'%3ERH%3C/text%3E%3C/svg%3E">
+
+<!-- BOOT GATE — setiap masuk index selalu ke boot.html,
+     KECUALI kedatangan dari boot itu sendiri (?booted=1). -->
 <script>
 (function () {
   var params = new URLSearchParams(window.location.search);
-  if (params.get('booted') !== '1') {
+  if (params.get('booted') === '1') {
+    try {
+      history.replaceState(null, '', window.location.pathname);
+    } catch (e) {}
+  } else {
     window.location.replace('boot.html');
   }
 })();
@@ -21,7 +29,7 @@
 <meta name="description" content="Bukan grup instan. Tempat belajar bisnis, cari lowongan, dan bertumbuh bersama. Dari niat, jadi nyata.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
@@ -31,6 +39,7 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 </div>
+<div class="rh-fx" id="rhFx"></div>
 
 <!-- ============================================
      NAVBAR
@@ -85,6 +94,26 @@
     <p class="hero-note">Gratis. Tanpa biaya masuk. Tanpa upsell.</p>
   </div>
 </header>
+<!-- MARQUEE — ticker premium -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-group">
+      <span><b>Dari niat,</b> jadi nyata.</span><i>♦</i>
+      <span><b>Bisnis</b> · Karier · Relasi</span><i>♦</i>
+      <span>Bukan grup <b>instan</b>.</span><i>♦</i>
+      <span>Solusi, bukan <b>obrolan</b>.</span><i>♦</i>
+      <span>Bertumbuh <b>bersama</b>.</span><i>♦</i>
+    </div>
+    <div class="marquee-group">
+      <span><b>Dari niat,</b> jadi nyata.</span><i>♦</i>
+      <span><b>Bisnis</b> · Karier · Relasi</span><i>♦</i>
+      <span>Bukan grup <b>instan</b>.</span><i>♦</i>
+      <span>Solusi, bukan <b>obrolan</b>.</span><i>♦</i>
+      <span>Bertumbuh <b>bersama</b>.</span><i>♦</i>
+    </div>
+  </div>
+</div>
+
 
 <!-- ============================================
      STATS BAR

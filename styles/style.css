@@ -7,18 +7,18 @@
    1. TOKENS
    ============================================ */
 :root{
-  /* Backgrounds — warm-tinted near-black */
-  --bg:#06060a;
-  --bg-elev:#0a0a0e;
-  --bg-deep:#040407;
+  /* Backgrounds — navy kehitaman */
+  --bg:#070b14;
+  --bg-elev:#0c1220;
+  --bg-deep:#04060c;
 
-  /* Glass — 3 layer */
+  /* Glass — 3 layer (aksen steel-navy tipis) */
   --glass-bg:rgba(255,255,255,.035);
   --glass-bg-hover:rgba(255,255,255,.055);
   --glass-bg-strong:rgba(255,255,255,.08);
-  --glass-border:rgba(255,255,255,.08);
-  --glass-border-hover:rgba(255,255,255,.15);
-  --glass-highlight:rgba(255,255,255,.10);
+  --glass-border:rgba(166,184,224,.09);
+  --glass-border-hover:rgba(166,184,224,.16);
+  --glass-highlight:rgba(196,210,244,.10);
   --glass-blur:24px;
   --glass-blur-light:16px;
 
@@ -1675,6 +1675,7 @@ html.js .reveal :is(
   .pull-quote,
   .principle-detail,
   .topic,
+  .creators-grid > .creator-card,
   .page-hero > .wrap > *
 ){
   opacity:0;
@@ -1705,10 +1706,36 @@ html.js .reveal.in :is(
   .pull-quote,
   .principle-detail,
   .topic,
+  .creators-grid > .creator-card,
   .page-hero > .wrap > *
 ){
   opacity:1;
   transform:none;
+}
+
+/* Reveal .in ber-spesifisitas lebih tinggi & memakai --rd,
+   sehingga hover-lift mati / tertunda. Pulihkan dengan konteks: */
+html.js .reveal.in :is(.card, .founder, .creator-card):hover{
+  transform:translateY(-4px);
+  transition:
+    opacity .3s var(--ease),
+    transform .45s var(--ease),
+    background .45s var(--ease),
+    border-color .45s var(--ease),
+    box-shadow .45s var(--ease);
+}
+html.js .reveal.in .road-item:hover{
+  transform:translateY(-3px);
+  transition:
+    opacity .3s var(--ease),
+    transform .45s var(--ease),
+    background .45s var(--ease),
+    border-color .45s var(--ease),
+    box-shadow .45s var(--ease);
+}
+html.js .reveal.in .stat:hover{
+  transform:translateY(-2px);
+  transition:transform .45s var(--ease);
 }
 
 /* Reveal variants */
@@ -1848,34 +1875,6 @@ html.rh-ready body{
 /* Page hidden — pause orbs */
 html.page-hidden .orb{
   animation-play-state:paused;
-}
-
-/* ============================================
-   33. SCROLL-DRIVEN (native, where supported)
-   Progressive enhancement — diabaikan di
-   browser lama.
-   ============================================ */
-@supports (animation-timeline: view()){
-  @media (prefers-reduced-motion: no-preference){
-    .card,
-    .road-item,
-    .founder,
-    .explore a{
-      animation:cardLift linear both;
-      animation-timeline:view();
-      animation-range:entry 0% cover 30%;
-    }
-    @keyframes cardLift{
-      from{
-        opacity:.6;
-        transform:translateY(30px) scale(.98);
-      }
-      to{
-        opacity:1;
-        transform:none;
-      }
-    }
-  }
 }
 
 /* ============================================
@@ -2023,6 +2022,7 @@ html.page-hidden .orb{
     .pull-quote,
     .principle-detail,
     .topic,
+    .creators-grid > .creator-card,
     .page-hero > .wrap > *
   ){
     opacity:1 !important;
@@ -2128,7 +2128,7 @@ html.page-hidden .orb{
   aspect-ratio:4/5;
   border-radius:calc(var(--radius) - 8px);
   overflow:hidden;
-  background:#0a0a0e;
+  background:#0b111e;
   margin-bottom:24px;
 }
 
@@ -2916,4 +2916,714 @@ button{
   details[open] > *:not(summary){
     animation:none !important;
   }
+}
+/* ============================================
+   39. AURUM EDITION — Super Premium Layer
+   Custom cursor · Scrollbar · Aurora · Marquee
+   Page transitions · Tilt · Gold accents
+   ============================================ */
+:root{
+  /* Champagne gold — dipakai hemat, hanya untuk aksen */
+  --gold:#d8c7a1;
+  --gold-soft:#b9a479;
+  --gold-faint:rgba(216,199,161,.45);
+  --gold-glow:0 0 24px rgba(216,199,161,.16);
+}
+
+/* --------------------------------------------
+   39.1 — CUSTOM SCROLLBAR
+   -------------------------------------------- */
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-track{background:var(--bg-deep)}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(216,199,161,.28));
+  border-radius:100px;
+  border:2px solid var(--bg-deep);
+  transition:background .3s var(--ease);
+}
+::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(216,199,161,.4));
+}
+html{scrollbar-width:thin;scrollbar-color:rgba(216,199,161,.35) var(--bg-deep)}
+
+/* --------------------------------------------
+   39.2 — CUSTOM CURSOR (hover devices only)
+   dot + halo, menyala di elemen interaktif
+   -------------------------------------------- */
+.rh-fx{
+  position:fixed;inset:0;
+  z-index:9999;
+  pointer-events:none;
+}
+.cur-dot,
+.cur-halo{
+  position:fixed;
+  top:0;left:0;
+  border-radius:50%;
+  pointer-events:none;
+  will-change:transform;
+  opacity:0;
+}
+html.has-cur .cur-dot,
+html.has-cur .cur-halo{opacity:1}
+.cur-dot{
+  width:5px;height:5px;
+  margin:-2.5px 0 0 -2.5px;
+  background:#fff;
+  box-shadow:0 0 8px rgba(255,255,255,.7);
+  transition:width .25s var(--ease),height .25s var(--ease),margin .25s var(--ease),opacity .3s;
+}
+.cur-halo{
+  width:38px;height:38px;
+  margin:-19px 0 0 -19px;
+  border:1px solid rgba(216,199,161,.5);
+  background:radial-gradient(circle,rgba(216,199,161,.08),transparent 70%);
+  transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),border-color .3s,opacity .3s;
+}
+html.has-cur.cur-hot .cur-dot{width:0;height:0;margin:0}
+html.has-cur.cur-hot .cur-halo{
+  width:62px;height:62px;margin:-31px 0 0 -31px;
+  border-color:rgba(216,199,161,.85);
+  background:radial-gradient(circle,rgba(216,199,161,.14),transparent 70%);
+}
+/* focus ring ikut cursor styling biar premium */
+html.has-cur,html.has-cur *{cursor:none!important}
+@media (hover:none){
+  .cur-dot,.cur-halo{display:none}
+  html.has-cur,html.has-cur *{cursor:auto!important}
+  html.has-cur a,html.has-cur button,html.has-cur summary{cursor:auto}
+}
+
+/* --------------------------------------------
+   39.3 — AURORA BACKGROUND ENHANCED
+   Putaran konik pelan + vignette dalam
+   -------------------------------------------- */
+.ambient::before{
+  content:'';
+  position:absolute;inset:0;
+  background:conic-gradient(from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(216,199,161,.03) 40deg,
+    transparent 90deg,
+    rgba(255,255,255,.018) 160deg,
+    transparent 220deg,
+    rgba(216,199,161,.025) 290deg,
+    transparent 360deg);
+  -webkit-mask-image:radial-gradient(circle at 50% 40%,#000 0%,transparent 70%);
+  mask-image:radial-gradient(circle at 50% 40%,#000 0%,transparent 70%);
+  opacity:0;
+  animation:auroraSpin 60s linear infinite, auroraIn .8s var(--ease) 1s forwards;
+  z-index:1;
+}
+@keyframes auroraSpin{to{transform:rotate(360deg)}}
+@keyframes auroraIn{to{opacity:1}}
+
+/* Vignette dalam — depth di ujung layar */
+.ambient::after{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 55%,rgba(0,0,0,.5) 100%);
+  z-index:1;
+}
+
+/* --------------------------------------------
+   39.4 — MARQUEE STRIP
+   Strip bergerak — premium ticker
+   -------------------------------------------- */
+.marquee{
+  position:relative;
+  z-index:3;
+  padding:34px 0;
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+}
+.marquee-track{
+  display:flex;
+  width:max-content;
+  gap:0;
+  animation:marqueeSlide 30s linear infinite;
+  will-change:transform;
+}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-group{
+  display:flex;
+  align-items:center;
+  gap:56px;
+  padding-right:56px;
+  white-space:nowrap;
+}
+.marquee-group > span{
+  font-family:'Instrument Serif','Times New Roman',Georgia,serif;
+  font-style:italic;
+  font-size:clamp(28px,4.6vw,52px);
+  letter-spacing:-.02em;
+  color:var(--text-dim);
+  transition:color .4s var(--ease);
+}
+.marquee-group > span b{color:var(--text-soft);font-weight:400}
+.marquee-group i{
+  font-style:normal;
+  color:var(--gold-faint);
+  font-size:clamp(12px,1.4vw,16px);
+  text-shadow:0 0 10px rgba(216,199,161,.5);
+  animation:marqueeStar 2.4s ease-in-out infinite;
+}
+@keyframes marqueeStar{0%,100%{transform:scale(.7);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+@keyframes marqueeSlide{to{transform:translateX(-50%)}}
+
+/* --------------------------------------------
+   39.5 — BACK TO TOP (ring progress)
+   -------------------------------------------- */
+.to-top{
+  position:fixed;
+  right:24px;bottom:24px;
+  z-index:120;
+  width:52px;height:52px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px) saturate(180%);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-lg);
+  cursor:pointer;
+  pointer-events:none;
+  transform:translateY(20px) scale(.9);
+  opacity:0;
+  visibility:hidden;
+  transition:all .45s var(--ease);
+}
+.to-top.show{
+  transform:none;
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.to-top:hover{
+  transform:translateY(-3px);
+  border-color:rgba(216,199,161,.45);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-lg),var(--gold-glow);
+}
+.to-top svg{
+  position:absolute;inset:-1px;
+  width:calc(100% + 2px);height:calc(100% + 2px);
+  transform:rotate(-90deg);
+}
+.to-top .ring-prog{
+  fill:none;
+  stroke:var(--gold);
+  stroke-width:1.6;
+  stroke-linecap:round;
+  stroke-dasharray:157;
+  stroke-dashoffset:157;
+  filter:drop-shadow(0 0 4px rgba(216,199,161,.6));
+  transition:stroke-dashoffset .1s linear;
+}
+.to-top .arr{
+  color:var(--text-soft);
+  font-size:17px;
+  transition:transform .3s var(--ease),color .3s var(--ease);
+}
+.to-top:hover .arr{transform:translateY(-2px);color:var(--text)}
+
+/* --------------------------------------------
+   39.6 — PAGE TRANSITION CURTAIN
+   Disuntik oleh JS via #rhFx
+   -------------------------------------------- */
+.page-curtain{
+  position:fixed;inset:0;
+  z-index:9000;
+  pointer-events:none;
+  display:flex;
+}
+.cur-panel{
+  flex:1;
+  position:relative;
+  background:linear-gradient(180deg,#05070f,#0b1120);
+  /* default TERTUTUP — tirai selalu ada sejak paint pertama */
+  transform:scaleY(1);
+  transform-origin:top;
+  will-change:transform;
+  transition:transform .7s var(--ease);
+  /* auto-buka saat halaman dimuat — mandiri, walau JS mati */
+  animation:curtainReveal .95s var(--ease) .24s both;
+}
+.cur-panel:nth-child(2){
+  transform-origin:bottom;
+  animation-delay:.3s;
+}
+.cur-panel::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(216,199,161,.06),transparent);
+  opacity:.6;
+}
+@keyframes curtainReveal{
+  from{transform:scaleY(1)}
+  to{transform:scaleY(0)}
+}
+/* navigasi — tirai menutup kembali (animation di-cancel,
+   transform kembali ke default scaleY(1) via transition) */
+.page-curtain.leave{pointer-events:auto}
+.page-curtain.leave .cur-panel{
+  animation:none;
+  transform:scaleY(1);
+}
+
+/* emissive lipatan tengah saat curtain */
+.page-curtain .cur-line{
+  position:absolute;top:50%;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(216,199,161,.9),transparent);
+  opacity:0;
+  transform:translateY(-50%);
+}
+.page-curtain.leave .cur-line{
+  animation:curline .9s var(--ease) forwards;
+}
+@keyframes curline{
+  0%{opacity:0}
+  45%{opacity:1;box-shadow:0 0 30px rgba(216,199,161,.7)}
+  100%{opacity:0}
+}
+
+/* --------------------------------------------
+   39.7 — HERO SPLIT TEXT (word-by-word)
+   -------------------------------------------- */
+html.js .hero-split .hs-word{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(.4em) rotate(.5deg);
+  transform-origin:0 100%;
+  filter:blur(6px);
+  transition:
+    opacity .9s var(--ease),
+    transform .9s var(--ease),
+    filter .9s var(--ease);
+  will-change:opacity,transform,filter;
+}
+html.js .hero-split .hs-word.in{
+  opacity:1;
+  transform:none;
+  filter:blur(0);
+}
+
+/* --------------------------------------------
+   39.8 — CARD 3D TILT (subtle, pointer aware)
+   -------------------------------------------- */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .tilt{
+    transform-style:preserve-3d;
+    perspective:900px;
+  }
+}
+
+/* --------------------------------------------
+   39.9 — GOLD ACCENTS — dipakai hemat
+   -------------------------------------------- */
+.section-label::before{background:linear-gradient(90deg,var(--gold-faint),transparent)}
+.foot-brand .logo-dot{background:var(--gold);box-shadow:0 0 12px rgba(216,199,161,.8)}
+.scroll-progress{
+  background:linear-gradient(90deg,rgba(216,199,161,.25),var(--gold));
+  filter:drop-shadow(0 0 6px rgba(216,199,161,.5));
+}
+.eyebrow::before{background:var(--gold);box-shadow:0 0 8px rgba(216,199,161,.7)}
+.creator-role::after{background:linear-gradient(90deg,var(--gold-faint),transparent)}
+
+/* pull-quote ornament emas */
+.pull-quote::before,
+.pull-quote::after{
+  background:linear-gradient(90deg,transparent,rgba(216,199,161,.5),transparent);
+}
+
+/* ---------- 39.10 — PAGE ENTER (halus) ---------- */
+/* tirai auto-reveal lewat animation (39.6) — tak perlu JS */
+
+@media (prefers-reduced-motion: reduce){
+  .marquee-track{animation:none}
+  .ambient::before{display:none}
+  .to-top svg .ring-prog{transition:none}
+  .cur-dot,.cur-halo{display:none}
+  html.has-cur a,html.has-cur button,html.has-cur summary{cursor:auto}
+  html.js .hero-split .hs-word{opacity:1;transform:none;filter:none;transition:none}
+  .page-curtain{display:none}
+}
+
+/* ============================================
+   40. PERFORMANCE TUNING — antibego, ringan
+   Diprioritaskan: transform/opacity murni,
+   GPU blur dibuang, blur nyata dibatasi.
+   ============================================ */
+
+/* ---------- 40.1 — ORBS: gradient glow, bukan GPU blur ----------
+   radial-gradient sudah fade ke transparan, jadi filter:blur(100px)
+   cuma bakar GPU. Nonaktifkan; falloff digeser lebih lembut. */
+.orb{filter:none}
+.orb-1{
+  background:radial-gradient(circle,
+    rgba(66,102,200,.16) 0%,
+    rgba(48,74,150,.06) 55%,
+    transparent 82%);
+}
+.orb-2{
+  background:radial-gradient(circle,
+    rgba(88,120,220,.13) 0%,
+    rgba(60,88,175,.05) 55%,
+    transparent 82%);
+}
+.orb-3{
+  background:radial-gradient(circle,
+    rgba(140,165,230,.10) 0%,
+    rgba(110,134,205,.04) 55%,
+    transparent 82%);
+}
+
+/* ---------- 40.2 — backdrop-filter dibatasi ----------
+   Blur sungguhan hanya di elemen sedikit & kecil (nav,
+   ghost btn, to-top, FAQ). Grid besar beralih ke
+   "super glass" gradient (bagian 41) yang jauh lebih murah. */
+.nav-inner,
+.btn-ghost,
+.to-top,
+.faq-list details{
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+}
+.card,
+.creator-card,
+.founder,
+.road-item,
+.explore > a,
+.stat,
+.for-col,
+.belief,
+.principle{
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+
+/* ---------- 40.3 — hemat di layar kecil / touch ----------
+   Matikan aurora conic-spin & noise turbulensi akhiri beban. */
+@media (max-width:768px){
+  body::before{opacity:.12}
+  .ambient::before{display:none}
+  .faq-list details{
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+  }
+}
+@media (hover:none){
+  .ambient::before{display:none}
+  body::before{opacity:.14}
+}
+
+/* ---------- 40.4 — lewati render di luar jangkauan ---------- */
+main section,
+footer{
+  content-visibility:auto;
+  contain-intrinsic-block-size:auto 640px;
+}
+
+/* ---------- 40.5 — sentuhan mobile rapi ---------- */
+html{
+  -webkit-tap-highlight-color:transparent;
+}
+@media (max-width:768px){
+  .card,
+  .creator-card,
+  .founder,
+  .road-item,
+  .stat,
+  .explore > a{
+    /* tanpa hover-lift di layar sentuh — jeda hilang, tetap elegan */
+    contain:paint;
+  }
+}
+
+/* ============================================
+   41. ULTRA GLASS & MICRO-INTERACTIONS
+   Kaca premium: gradient berlapis + cahaya inset
+   (TANPA pseudo tambahan → bebas konflik).
+   ============================================ */
+:root{
+  --glass-rise:radial-gradient(130% 100% at 12% 0%,rgba(255,255,255,.10),transparent 46%);
+  --glass-sheen:linear-gradient(155deg,rgba(255,255,255,.075),rgba(255,255,255,.02) 42%,rgba(255,255,255,.05));
+  --gold-hair:rgba(216,199,161,.30);
+}
+
+/* ---------- 41.1 — SUPER GLASS (basis) ---------- */
+.card,
+.creator-card,
+.founder,
+.road-item,
+.explore > a,
+.stat,
+.for-col,
+.belief,
+.principle{
+  background:
+    var(--glass-rise),
+    var(--glass-sheen);
+  border-color:rgba(255,255,255,.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14),
+    inset 0 0 0 1px rgba(255,255,255,.02),
+    0 16px 42px -16px rgba(0,0,0,.6);
+}
+
+/* ---------- 41.2 — HOVER: kaca menyala + sentuh emas ---------- */
+.card:hover,
+.creator-card:hover,
+.founder:hover,
+.road-item:hover,
+.explore > a:hover,
+.stat:hover,
+.for-col:hover,
+.belief:hover,
+.principle:hover{
+  background:
+    radial-gradient(150% 110% at 12% 0%,rgba(255,255,255,.14),transparent 46%),
+    var(--glass-sheen);
+  border-color:var(--gold-hair);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    0 20px 52px -14px rgba(0,0,0,.62),
+    0 0 0 1px rgba(216,199,161,.10),
+    0 0 36px -8px rgba(216,199,161,.20);
+}
+
+/* ---------- 41.3 — FAQ premium (open-state emas) ---------- */
+.faq-list details{
+  transition:
+    border-color .4s var(--ease),
+    box-shadow .4s var(--ease),
+    background .4s var(--ease);
+}
+.faq-list details:hover{
+  border-color:rgba(255,255,255,.22);
+}
+.faq-list details[open]{
+  border-color:var(--gold-hair);
+  background:
+    radial-gradient(120% 100% at 15% 0%,rgba(255,255,255,.07),transparent 45%),
+    linear-gradient(155deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 0 34px -10px rgba(216,199,161,.18);
+}
+.faq-list details[open] summary{
+  color:#fff;
+}
+
+/* ---------- 41.4 — SECTION LABEL: dot emas berdenyut ---------- */
+.section-label::after{
+  content:'';
+  width:5px;height:5px;
+  border-radius:50%;
+  margin-left:2px;
+  background:radial-gradient(circle,rgba(216,199,161,.95) 30%,transparent 72%);
+  box-shadow:0 0 9px rgba(216,199,161,.8);
+  animation:labelDot 3.2s var(--ease-soft) infinite;
+}
+@keyframes labelDot{
+  0%,100%{opacity:.35;transform:scale(.85)}
+  50%{opacity:1;transform:scale(1.18)}
+}
+
+/* ---------- 41.5 — LINK ARROW: panah meluncur ---------- */
+.link-arrow svg{
+  transition:transform var(--dur-base) var(--ease);
+}
+.link-arrow:hover svg{
+  transform:translateX(4px);
+}
+
+/* ---------- 41.6 — BUTTON PRIMARY: aksen emas ---------- */
+.btn-primary:hover{
+  border-color:rgba(216,199,161,.45);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 26px -4px rgba(216,199,161,.55),
+    inset 0 -1px 0 rgba(0,0,0,.08);
+}
+
+/* ---------- 41.7 — SELEKSI & FOKUS: champagne ---------- */
+::selection{
+  background:rgba(216,199,161,.24);
+  color:#fff;
+}
+:focus-visible{
+  outline-color:var(--gold-faint);
+  box-shadow:0 0 0 4px rgba(216,199,161,.14);
+}
+
+/* ---------- 41.8 — TOUCH: netralkan aksen hover ---------- */
+@media (hover:none){
+  .card:hover,
+  .creator-card:hover,
+  .founder:hover,
+  .road-item:hover,
+  .explore > a:hover,
+  .stat:hover,
+  .for-col:hover,
+  .belief:hover,
+  .principle:hover,
+  .faq-list details:hover{
+    border-color:rgba(255,255,255,.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.14),
+      0 16px 42px -16px rgba(0,0,0,.6);
+  }
+  .btn-primary:hover{
+    border-color:transparent;
+    box-shadow:
+      inset 0 -1px 0 rgba(0,0,0,.08),
+      var(--shadow-sm);
+  }
+  .section-label::after{display:none}
+  .link-arrow:hover svg{transform:none}
+}
+
+/* ============================================
+   42. NAVY OVERLAY — aura kebiruan statis
+   Nuansa navy kehitaman + pendukung hitam/abu
+   ============================================ */
+body{
+  background-image:
+    radial-gradient(120% 90% at 78% -12%, rgba(52,78,168,.16), transparent 55%),
+    radial-gradient(110% 80% at 8% 108%, rgba(66,96,190,.12), transparent 52%);
+  background-attachment:fixed;
+}
+@media (max-width:768px){
+  body{background-attachment:scroll}
+}
+
+/* ============================================
+   43. LUXE POLISH — emas ditahan, ketajaman naik
+   Aksen emas cuma tinggal hairline sangat tipis;
+   sisanya digantikan cahaya putih-baja yang tenang.
+   ============================================ */
+:root{
+  --gold-faint:rgba(216,199,161,.26);
+  --gold-glow:0 0 22px rgba(216,199,161,.07);
+  --steel:rgba(196,210,244,.5);
+  --steel-soft:rgba(196,210,244,.22);
+
+  /* Legibilitas — teks sedikit lebih terang di atas navy */
+  --text-soft:#c7cad3;
+  --text-muted:#8d91a0;
+  --text-dim:#565963;
+}
+
+/* ---------- Typografi editorial ---------- */
+.hero .rotate-line,
+.page-hero .rotate-line{
+  font-family:'Instrument Serif',Georgia,serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(17px,2.1vw,23px);
+  letter-spacing:.002em;
+  color:var(--text-soft);
+}
+h1{letter-spacing:-.036em}
+.nav-links a{letter-spacing:.02em}
+
+/* ---------- Marquee: separator senyap ---------- */
+.marquee-group i{
+  color:rgba(255,255,255,.15);
+  text-shadow:none;
+  font-size:clamp(9px,1.1vw,12px);
+  animation:none;
+}
+
+/* ---------- Cursor halo: baja, emas hanya saat menyentuh ---------- */
+.cur-halo{
+  border-color:var(--steel-soft);
+  background:radial-gradient(circle,rgba(196,210,244,.07),transparent 70%);
+}
+html.has-cur.cur-hot .cur-halo{
+  border-color:rgba(216,199,161,.42);
+  background:radial-gradient(circle,rgba(216,199,161,.09),transparent 70%);
+}
+
+/* ---------- Back to top: ring baja ---------- */
+.to-top .ring-prog{
+  stroke:rgba(219,226,245,.8);
+  filter:none;
+}
+.to-top:hover{
+  border-color:rgba(255,255,255,.28);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-lg);
+}
+
+/* ---------- Curtain line: kilas samar ---------- */
+.page-curtain .cur-line{
+  background:linear-gradient(90deg,transparent,rgba(216,199,161,.32),transparent);
+}
+
+/* ---------- Scroll progress: baja-navy ---------- */
+.scroll-progress{
+  background:linear-gradient(90deg,rgba(196,210,244,.16),rgba(196,210,244,.8));
+  filter:drop-shadow(0 0 5px rgba(96,120,200,.22));
+}
+
+/* ---------- Card hover: cahaya putih-baja premium ---------- */
+.card:hover,
+.creator-card:hover,
+.founder:hover,
+.road-item:hover,
+.explore > a:hover,
+.stat:hover,
+.for-col:hover,
+.belief:hover,
+.principle:hover{
+  border-color:rgba(196,210,244,.26);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    0 24px 60px -16px rgba(0,0,0,.62),
+    0 0 0 1px rgba(196,210,244,.06);
+}
+
+/* ---------- FAQ open: bersih ---------- */
+.faq-list details[open]{
+  border-color:rgba(255,255,255,.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 0 26px -12px rgba(196,210,244,.14);
+}
+
+/* ---------- Primary CTA: champagne-cream tenang ---------- */
+.btn-primary{
+  background:linear-gradient(180deg,#efe9dd,#dfd3bc);
+  color:#17110a;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.7),
+    inset 0 -1px 0 rgba(0,0,0,.12),
+    0 10px 26px -10px rgba(0,0,0,.5);
+}
+.btn-primary:hover{
+  border-color:rgba(255,255,255,.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.75),
+    inset 0 -1px 0 rgba(0,0,0,.12),
+    0 16px 40px -12px rgba(0,0,0,.55),
+    0 0 24px -8px rgba(216,199,161,.32);
+}
+.btn-primary:active{
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,.25),
+    inset 0 -1px 0 rgba(0,0,0,.10);
+}
+
+/* ---------- Aksen titik emas: lebih sayap, tak mencolok ---------- */
+.section-label::after{
+  background:radial-gradient(circle,rgba(216,199,161,.8) 30%,transparent 72%);
+  box-shadow:0 0 7px rgba(216,199,161,.4);
+}
+.eyebrow::before{
+  box-shadow:0 0 6px rgba(216,199,161,.35);
+}
+.foot-brand .logo-dot{
+  box-shadow:0 0 10px rgba(216,199,161,.45);
 }

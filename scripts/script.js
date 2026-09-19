@@ -669,24 +669,364 @@
   }
 
   /* ============================================
+     AURUM EDITION — VFX SHELL
+     Cursor · Back-to-top · Curtain · dsb.
+     Semua disuntik ke #rhFx (satu titik, rapi)
+     ============================================ */
+  function initFxShell() {
+    const fx = $('#rhFx');
+    if (!fx) return;
+
+    /* ---------- Custom cursor ---------- */
+    const dot = document.createElement('div');
+    dot.className = 'cur-dot';
+    dot.setAttribute('aria-hidden', 'true');
+    const halo = document.createElement('div');
+    halo.className = 'cur-halo';
+    halo.setAttribute('aria-hidden', 'true');
+    if (
+      !isTouch &&
+      !prefersReducedMotion &&
+      window.matchMedia('(pointer: fine)').matches
+    ) {
+      document.documentElement.classList.add('has-cur');
+      fx.appendChild(dot);
+      fx.appendChild(halo);
+    }
+
+    /* ---------- Back to top ---------- */
+    const CIRC = 157.08; //  2πr, r = 25
+    const topBtn = document.createElement('button');
+    topBtn.className = 'to-top';
+    topBtn.setAttribute('aria-label', 'Kembali ke atas');
+    topBtn.innerHTML =
+      '<svg viewBox="0 0 54 54" aria-hidden="true">' +
+        '<circle class="ring-prog" cx="27" cy="27" r="25" />' +
+      '</svg>' +
+      '<span class="arr">↑</span>';
+    fx.appendChild(topBtn);
+
+    const ring = topBtn.querySelector('.ring-prog');
+
+    /* Init state curtain — auto-reveal via CSS animation di load */
+    const curtain = document.createElement('div');
+    curtain.className = 'page-curtain';
+    curtain.setAttribute('aria-hidden', 'true');
+    curtain.innerHTML =
+      '<div class="cur-panel"></div>' +
+      '<div class="cur-panel"></div>' +
+      '<div class="cur-line"></div>';
+    fx.appendChild(curtain);
+
+    /* Expose untuk modul lain */
+    RH.vfx = { fx, dot, halo, topBtn, ring, curtain };
+  }
+
+  const RH = (window.RH = window.RH || {});
+  const VFX = {
+    fx: null,
+    dot: null,
+    halo: null,
+    topBtn: null,
+    ring: null,
+    curtain: null,
+    curX: 0, curY: 0,
+    tX: 0, tY: 0,
+    raf: null,
+  };
+
+  function initVfxRegistry() {
+    VFX.fx = $('#rhFx');
+    if (!VFX.fx) return;
+
+    VFX.dot = VFX.fx.querySelector('.cur-dot');
+    VFX.halo = VFX.fx.querySelector('.cur-halo');
+    VFX.topBtn = VFX.fx.querySelector('.to-top');
+    VFX.ring = VFX.topBtn ? VFX.topBtn.querySelector('.ring-prog') : null;
+    VFX.curtain = VFX.fx.querySelector('.page-curtain');
+  }
+
+  /* ============================================
+     MODULE — Custom Cursor Trailer
+     ============================================ */
+  function initCustomCursor() {
+    if (!VFX.dot || !VFX.halo) return;
+
+    const IDLE_MS = 1800; // stop rAF bila kursor diam / tab tersembunyi — hemat baterai
+    let lastMove = 0;
+    let idle = true;
+
+    VFX.tX = VFX.curX = window.innerWidth / 2;
+    VFX.tY = VFX.curY = window.innerHeight / 2;
+
+    window.addEventListener('mousemove', (e) => {
+      VFX.tX = e.clientX;
+      VFX.tY = e.clientY;
+      lastMove = performance.now();
+      if (idle) {
+        idle = false;
+        if (VFX.halo) VFX.halo.style.opacity = '1';
+        loop();
+      }
+    }, { passive: true });
+
+    const HOT_SEL =
+      'a, button, summary, .btn, .social-link, .card, .creator-card, ' +
+      '.founder, .stat, .explore a, .road-item, details';
+
+    document.addEventListener('mouseover', (e) => {
+      const inter = e.target.closest(HOT_SEL);
+      document.documentElement.classList.toggle('cur-hot', !!inter);
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', () => {
+      document.documentElement.classList.remove('cur-hot');
+    });
+
+    const loop = () => {
+      if (document.hidden || performance.now() - lastMove > IDLE_MS) {
+        idle = true;
+        VFX.raf = null;
+        if (VFX.halo) VFX.halo.style.opacity = '0';
+        return;
+      }
+
+      VFX.curX += (VFX.tX - VFX.curX) * 0.16;
+      VFX.curY += (VFX.tY - VFX.curY) * 0.16;
+      const dx = VFX.tX - VFX.curX;
+      const dy = VFX.tY - VFX.curY;
+      const speed = Math.hypot(dx, dy);
+
+      if (VFX.dot) VFX.dot.style.transform = `translate3d(${VFX.tX}px, ${VFX.tY}px, 0)`;
+      if (VFX.halo) VFX.halo.style.transform = `translate3d(${VFX.curX}px, ${VFX.curY}px, 0)`;
+
+      /* halo membesar sedikit saat kursor melesat */
+      if (VFX.halo) {
+        const base = 38;
+        const grow = clamp(speed * 0.045, 0, 16);
+        VFX.halo.style.width = (base + grow) + 'px';
+        VFX.halo.style.height = (base + grow) + 'px';
+        VFX.halo.style.marginLeft = (-(base + grow) / 2) + 'px';
+        VFX.halo.style.marginTop = (-(base + grow) / 2) + 'px';
+      }
+      VFX.raf = raf(loop);
+    };
+  }
+
+  /* ============================================
+     MODULE — Back to Top (ring progress)
+     ============================================ */
+  function initBackToTop() {
+    if (!VFX.topBtn || !VFX.ring) return;
+    const CIRC = 157.08;
+
+    const update = () => {
+      const y = window.pageYOffset || document.documentElement.scrollTop;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docH > 0 ? y / docH : 0;
+
+      VFX.topBtn.classList.toggle('show', y > 520);
+      VFX.ring.style.strokeDashoffset = (CIRC * (1 - pct)).toFixed(2);
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+
+    VFX.topBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      });
+    });
+  }
+
+  /* ============================================
+     MODULE — Page Transition (curtain wipe)
+     ============================================ */
+  function initPageTransitions() {
+    if (!VFX.curtain) return;
+
+    /* Tirai AUTO-TERBUKA via CSS animation saat load (39.6) —
+       tanpa konflik spesifisitas, tanpa perlu JS reveal.
+       JS hanya menangani penutupan saat navigasi. */
+
+    document.documentElement.classList.add('rh-ready');
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href]');
+      if (!link) return;
+
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('http')) return;
+      if (link.target === '_blank' || link.hasAttribute('download')) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (link.classList.contains('no-curtain')) return;
+
+      e.preventDefault();
+
+      if (prefersReducedMotion) {
+        window.location.href = href;
+        return;
+      }
+
+      VFX.curtain.classList.add('leave');
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 520);
+    });
+  }
+
+  /* ============================================
+     MODULE — Hero Split Text (word-by-word)
+     ============================================ */
+  function initHeroSplit() {
+    const split = () => {
+      $$('.hero h1, .page-hero h1').forEach((h1) => {
+        if (h1.querySelector('.hs-word')) return;
+        const nodes = Array.from(h1.childNodes);
+        h1.classList.add('hero-split');
+        h1.innerHTML = '';
+        let i = 0;
+        nodes.forEach((node) => {
+          if (node.nodeType === 3) {
+            node.textContent.split(/\s+/).filter(Boolean).forEach((word) => {
+              const w = document.createElement('span');
+              w.className = 'hs-word';
+              w.textContent = word;
+              w.style.transitionDelay = (i * 55) + 'ms';
+              h1.appendChild(w);
+              /* spasi sebagai tekstur antar-span — PENTING:
+                 spasi di dalam inline-block justru collapse,
+                 tanpa ini kata-kata nempel & tanpa jeda */
+              h1.append(' ');
+              i += 1;
+            });
+          } else if (node.nodeName === 'BR') {
+            h1.appendChild(document.createElement('br'));
+          }
+        });
+      });
+    };
+
+    split();
+
+    if (prefersReducedMotion || isTouch || !supportsIO) {
+      $$('.hero-split .hs-word').forEach((w) => w.classList.add('in'));
+      return;
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const words = entry.target.querySelectorAll('.hs-word');
+        words.forEach((w) => w.classList.add('in'));
+        io.disconnect();
+      });
+    }, { threshold: 0.35 });
+
+    const heroHeading = $('.hero h1, .page-hero h1');
+    if (heroHeading) io.observe(heroHeading);
+  }
+
+  /* ============================================
+     MODULE — Ambient Parallax (scroll depth)
+     ============================================ */
+  function initAmbientParallax() {
+    if (prefersReducedMotion) return;
+    const ambient = $('.ambient');
+    if (!ambient) return;
+
+    let ticking = false;
+    const update = () => {
+      const y = window.pageYOffset || document.documentElement.scrollTop;
+      ambient.style.transform = `translate3d(0, ${(y * -0.045).toFixed(2)}px, 0)`;
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      raf(update);
+    }, { passive: true });
+    update();
+  }
+
+  /* ============================================
+     MODULE — Magnetic Nav Links (halus)
+     ============================================ */
+  function initMagneticNavLinks() {
+    if (isTouch || prefersReducedMotion) return;
+    const links = $$('.nav-links a');
+    if (!links.length) return;
+
+    links.forEach((link) => {
+      const strength = 6;
+      let runId = null;
+      let tx = 0, ty = 0, cx = 0, cy = 0;
+
+      link.addEventListener('mousemove', (e) => {
+        const r = link.getBoundingClientRect();
+        tx = (e.clientX - (r.left + r.width / 2)) * 0.08;
+        ty = (e.clientY - (r.top + r.height / 2)) * 0.16;
+        if (!runId) runId = raf(loop);
+      }, { passive: true });
+
+      link.addEventListener('mouseleave', () => {
+        tx = 0; ty = 0;
+        if (!runId) runId = raf(loop);
+      });
+
+      const loop = () => {
+        cx += (tx - cx) * 0.2;
+        cy += (ty - cy) * 0.2;
+        link.style.transform = `translate(${clamp(cx, -strength, strength).toFixed(2)}px, ${clamp(cy, -strength, strength).toFixed(2)}px)`;
+        if (Math.abs(cx - tx) > .01 || Math.abs(cy - ty) > .01) {
+          runId = raf(loop);
+        } else {
+          runId = null;
+        }
+      };
+    });
+  }
+
+  /* ============================================
+     MODULE — Rounded FAQ (premium style)
+     ============================================ */
+  function initFaqPremium() {
+    // ivy polish: tidak ada perilaku wajib, cukup hook gaya
+    $$('details[open]').forEach((d) => {
+      // nothing — landasan CSS sudah menangani
+    });
+  }
+
+  /* ============================================
      BOOT SEQUENCE
      ============================================ */
   function init() {
+    initFxShell();
+    initVfxRegistry();
+
     run('ActiveNav', initActiveNav);
     run('MobileMenu', initMobileMenu);
     run('NavScroll', initNavScrollState);
     run('Faq', initFaq);
+    run('FaqPremium', initFaqPremium);
     run('SmoothScroll', initSmoothScroll);
     run('Reveal', initReveal);
     run('Typewriter', initRotatingTypewriter);
     run('StatsCounter', initStatsCounter);
     run('CursorSpotlight', initCursorSpotlight);
     run('MagneticButtons', initMagneticButtons);
+    run('MagneticNavLinks', initMagneticNavLinks);
     run('Prefetch', initPrefetch);
     run('Orbs', initOrbs);
     run('ScrollProgress', initScrollProgress);
     run('ExternalLinks', initExternalLinks);
     run('VisibilityPause', initVisibilityPause);
+    run('CustomCursor', initCustomCursor);
+    run('BackToTop', initBackToTop);
+    run('PageTransitions', initPageTransitions);
+    run('HeroSplit', initHeroSplit);
+    run('AmbientParallax', initAmbientParallax);
 
     document.documentElement.classList.add('rh-ready');
   }
